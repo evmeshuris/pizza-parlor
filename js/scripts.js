@@ -132,7 +132,6 @@ $(document).ready(function () {
   sizeList.addSize(small);
   sizeList.addSize(medium);
   sizeList.addSize(large);
-  console.log(sizeList);
 
   //pizza toppings
   let salami = new Topping("Chicken", 1.5);
@@ -145,7 +144,6 @@ $(document).ready(function () {
   toppingList.addTopping(parmesan);
   toppingList.addTopping(basil);
   toppingList.addTopping(pesto);
-  console.log(toppingList);
 
   displayPizzaSizeList(sizeList);
   displayPizzaToppingList(toppingList);
