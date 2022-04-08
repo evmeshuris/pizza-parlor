@@ -124,9 +124,9 @@ function displayPizzaTotalPrice(pizza) {
 $(document).ready(function () {
   let pizza = new Pizza();
   //pizza sizes
-  let small = new Size('10"', 12);
-  let medium = new Size('12"', 14);
-  let large = new Size('14"', 16);
+  let small = new Size('Small 10"', 12);
+  let medium = new Size('Medium 12"', 14);
+  let large = new Size('Large 14"', 16);
 
   let sizeList = new SizeList();
   sizeList.addSize(small);
