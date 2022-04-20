@@ -1,14 +1,13 @@
-// Business logic----------------------------------------------------------------------------------------
 //Business logic for Pizza
 function Pizza() {
   this.sizePrice = 0;
-  this.toppingPrices = [];
+  this.Prices = [];
   this.totalPrice = 0;
 }
 
 Pizza.prototype.setSize = function (pizzaSizeID, sizeList) {
   this.sizePrice = 0;
-  for (i = 0; i < sizeList.sizes.length; i++) {
+  for (let i = 0; i < sizeList.sizes.length; i++) {
     if (pizzaSizeID === sizeList.sizes[i].id) {
       this.sizePrice = sizeList.sizes[i].sizePrice;
     }
@@ -16,11 +15,11 @@ Pizza.prototype.setSize = function (pizzaSizeID, sizeList) {
 };
 
 Pizza.prototype.addToppings = function (toppingIDs, toppingList) {
-  this.toppingPrices = [];
-  for (i = 0; i < toppingIDs.length; i++) {
-    for (j = 0; j < toppingList.toppings.length; j++) {
+  this.Prices = [];
+  for (let i = 0; i < toppingIDs.length; i++) {
+    for (let j = 0; j < toppingList.toppings.length; j++) {
       if (toppingIDs[i] === toppingList.toppings[j].id) {
-        this.toppingPrices.push(toppingList.toppings[j].toppingPrice);
+        this.Prices.push(toppingList.toppings[j].Price);
       }
     }
   }
@@ -28,7 +27,7 @@ Pizza.prototype.addToppings = function (toppingIDs, toppingList) {
 
 Pizza.prototype.calculatePizzaPrice = function () {
   let toppingsTotalPrice = 0;
-  this.toppingPrices.forEach(function (topping) {
+  this.Prices.forEach(function (topping) {
     toppingsTotalPrice += topping;
   });
   this.totalPrice = this.sizePrice + toppingsTotalPrice;
@@ -56,9 +55,9 @@ SizeList.prototype.AssignID = function () {
 };
 
 //Business logic for Topping and ToppingList
-function Topping(toppingName, toppingPrice) {
-  this.toppingName = toppingName;
-  this.toppingPrice = toppingPrice;
+function Topping(Type, Price) {
+  this.Type = Type;
+  this.Price = Price;
 }
 function ToppingList() {
   this.toppings = [];
@@ -105,9 +104,9 @@ function displayPizzaToppingList(toppingListToShow) {
       topping.id +
       ">" +
       " " +
-      topping.toppingName +
+      topping.Type +
       ": $" +
-      topping.toppingPrice +
+      topping.Price +
       "</label><br>";
   });
   pizzaToppingSelect.html(htmlForPizzaToppingList);
@@ -116,17 +115,16 @@ function displayPizzaToppingList(toppingListToShow) {
 //Displays result statement with pizza's cost
 function displayPizzaTotalPrice(pizza) {
   let pizzaTotalPriceSelect = $("div#result");
-  let htmlForPizzaTotalPrice =
-    "<h2>Your total: $" + pizza.totalPrice + "</h2>";
+  let htmlForPizzaTotalPrice = "<h2>Your total: $" + pizza.totalPrice + "</h2>";
   pizzaTotalPriceSelect.html(htmlForPizzaTotalPrice);
 }
 
 $(document).ready(function () {
   let pizza = new Pizza();
   //pizza sizes
-  let small = new Size('10"', 12);
-  let medium = new Size('12"', 14);
-  let large = new Size('14"', 16);
+  let small = new Size('Small 10"', 12);
+  let medium = new Size('Medium 12"', 14);
+  let large = new Size('Large 14"', 16);
 
   let sizeList = new SizeList();
   sizeList.addSize(small);
@@ -135,17 +133,22 @@ $(document).ready(function () {
   console.log(sizeList);
 
   //pizza toppings
-  let salami = new Topping("Chicken", 1.5);
-  let parmesan = new Topping("Salami", 0.9);
-  let basil = new Topping("Basil", 0.5);
-  let pesto = new Topping("Pesto", 1.1);
+  let available_toppings = [
+    { id: 0, Type: "Chicken", Price: 1.5 },
+    { id: 0, Type: "Salami", Price: 0.9 },
+    { id: 0, Type: "Basil", Price: 0.5 },
+    { id: 0, Type: "Pesto", Price: 1.1 },
+  ];
+
+  function get_topping(type) {
+    return available_toppings.find(at => at.Type === type);
+  }
 
   let toppingList = new ToppingList();
-  toppingList.addTopping(salami);
-  toppingList.addTopping(parmesan);
-  toppingList.addTopping(basil);
-  toppingList.addTopping(pesto);
-  console.log(toppingList);
+  toppingList.addTopping(get_topping('Salami'));
+  toppingList.addTopping(get_topping('Basil'));
+  toppingList.addTopping(get_topping('Chicken'));
+  toppingList.addTopping(get_topping('Pesto'));
 
   displayPizzaSizeList(sizeList);
   displayPizzaToppingList(toppingList);
